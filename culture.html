@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>视频播放器</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #videoContainer {
+            position: relative;
+            height: 400px;
+        }
+
+        #myVideo {
+            width: 100%;
+            height: 100%;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        #controls button {
+            margin: 0 5px;
+        }
+
+        .night-mode body {
+            background-color: #333;
+        }
+
+        .night-mode #controls {
+            background-color: #666;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="videoContainer">
+        <video id="myVideo" controls>
+            <source src="666.mp4" type="video/mp4">
+        </video>
+        <div id="controls">
+            <button id="playBtn">播放</button>
+            <button id="pauseBtn">暂停</button>
+            <button id="jumpForwardBtn">快进</button>
+            <button id="jumpBackwardBtn">快退</button>
+            <input type="text" id="jumpToTimeInput" placeholder="输入时间（格式：00:00）">
+            <button id="jumpToTimeBtn">跳转</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var videoContainer = $('#videoContainer');
+            var video = $('#myVideo')[0];
+            var playBtn = $('#playBtn');
+            var pauseBtn = $('#pauseBtn');
+            var jumpForwardBtn = $('#jumpForwardBtn');
+            var jumpBackwardBtn = $('#jumpBackwardBtn');
+            var jumpToTimeInput = $('#jumpToTimeInput');
+            var jumpToTimeBtn = $('#jumpToTimeBtn');
+            var nightModeBtn = $('#nightModeBtn');
+
+            // 播放视频
+            playBtn.on('click', function() {
+                video.play();
+            });
+
+            // 暂停视频
+            pauseBtn.on('click', function() {
+                video.pause();
+            });
+
+            // 快进视频
+            jumpForwardBtn.on('click', function() {
+                video.currentTime += 5;
+            });
+
+            // 快退视频
+            jumpBackwardBtn.on('click', function() {
+                video.currentTime -= 5;
+            });
+
+            // 从指定时间点开始播放
+            jumpToTimeBtn.on('click', function() {
+                var timeStr = jumpToTimeInput.val();
+                var timeParts = timeStr.split(':');
+                if (timeParts.length === 2) {
+                    var minutes = parseInt(timeParts[0]);
+                    var seconds = parseInt(timeParts[1]);
+                    if (!isNaN(minutes) && !isNaN(seconds)) {
+                        video.currentTime = (minutes * 60) + seconds;
+                    }
+                }
+            });
+
+            // 切换夜间模式
+            nightModeBtn.on('click', function() {
+                $('body').toggleClass('night-mode');
+            });
+        });
+    </script>
+</body>
+</html>
